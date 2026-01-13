@@ -324,57 +324,6 @@ while running:
     pygame.display.flip()
     clock.tick(FPS)
 
-    generation = next(generation_counter)
-
-    screen.fill(WHITE)
-
-    population_fitness = [calculate_fitness(
-        individual) for individual in population]
-
-    population, population_fitness = sort_population(
-        population,  population_fitness)
-
-    best_fitness = calculate_fitness(population[0])
-    best_solution = population[0]
-
-    best_fitness_values.append(best_fitness)
-    best_solutions.append(best_solution)
-
-    draw_plot(screen, list(range(len(best_fitness_values))),
-              best_fitness_values, y_label="Fitness - Distance (pxls)")
-
-    draw_cities(screen, cities_locations, RED, NODE_RADIUS)
-    draw_paths(screen, best_solution, BLUE, width=3)
-    draw_paths(screen, population[1], rgb_color=(128, 128, 128), width=1)
-
-    print(f"Generation {generation}: Best fitness = {round(best_fitness, 2)}")
-
-    new_population = [population[0]]  # Keep the best individual: ELITISM
-
-    while len(new_population) < POPULATION_SIZE:
-
-        # selection
-        # simple selection based on first 10 best solutions
-        # parent1, parent2 = random.choices(population[:10], k=2)
-
-        # solution based on fitness probability
-        probability = 1 / np.array(population_fitness)
-        parent1, parent2 = random.choices(population, weights=probability, k=2)
-
-        # child1 = order_crossover(parent1, parent2)
-        child1 = order_crossover(parent1, parent1)
-
-        child1 = mutate(child1, MUTATION_PROBABILITY)
-
-        new_population.append(child1)
-
-    population = new_population
-
-    pygame.display.flip()
-    clock.tick(FPS)
-
-
-# TODO: save the best individual in a file if it is better than the one saved.
 
 # exit software
 pygame.quit()
